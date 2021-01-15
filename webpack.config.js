@@ -19,13 +19,18 @@ module.exports = {
                 options: {
                     presets: ["@babel/preset-env", "@babel/preset-react"]
                 }
-            }
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
         ]
     },
     devServer: {
         port: 3300,
         publicPath: "http://localhost:3300/",
-        hotOnly: true
+        hot: true,
+        inline: true
     },
     plugins: [new HtmlWebpackPlugin({template: path.resolve(__dirname, 'src', 'index.html')})]
 };
