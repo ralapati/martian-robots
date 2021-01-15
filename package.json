@@ -1,0 +1,20 @@
+{
+  "name": "martian-robots",
+  "version": "1.0.0",
+  "description": "Martian Robots - React sample test for LME - by Raghu Alapati",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ralapati/martian-robots.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ralapati/martian-robots/issues"
+  },
+  "homepage": "https://github.com/ralapati/martian-robots#readme"
+}
