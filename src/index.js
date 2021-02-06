@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import GridDimentions from './Components/gridDimentions.jsx';
+import StartPosition from './Components/startPosition.jsx';
+import RobotInstructions from './Components/robotInstructions.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
     return (
-        <div>
-            We can control Robots wandering on the Mars!
-        </div>
+        <React.Fragment>
+            <GridDimentions/>
+            <StartPosition/>
+            <RobotInstructions/>
+        </React.Fragment>
     );
 };
 
