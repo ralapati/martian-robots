@@ -6,8 +6,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 const GridDimentions = () => {
 
-    const [rows, updateRows] = useState([0]);
-    const [columns, updateColumns] = useState([0]);
+    const [rows, updateRows] = useState(0);
+    const [columns, updateColumns] = useState(0);
     const rowsUpdated = (eventKey) => {
       updateRows(eventKey);
     };
