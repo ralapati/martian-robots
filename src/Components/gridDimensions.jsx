@@ -1,21 +1,33 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import {MarsRobotContext} from "../mars-robo-context";
 
-const GridDimentions = () => {
+const GridDimensions = () => {
 
-    const [rows, updateRows] = useState(0);
-    const [columns, updateColumns] = useState(0);
+    const [state, dispatch] = useContext(MarsRobotContext);
     const rowsUpdated = (eventKey) => {
-      updateRows(eventKey);
+        dispatch({
+            type: 'SET_DIMENSIONS',
+            payload: {
+                rows: eventKey,
+                columns: state.dimensions.columns
+            }
+        });
     };
 
     const columnsUpdated = (eventKey) => {
-        updateColumns(eventKey);
+        dispatch({
+            type: 'SET_DIMENSIONS',
+            payload: {
+                rows: state.dimensions.rows,
+                columns: eventKey
+            }
+        })
     };
 
     return (
@@ -27,7 +39,7 @@ const GridDimentions = () => {
                 <Col sm={3}>
                     <Dropdown as={ButtonGroup} onSelect = { (eventKey, event) => rowsUpdated(eventKey, event)}>
                         <Button>
-                            Rows - {rows} (Max 50)
+                            Rows - {state.dimensions.rows} (Max 50)
                         </Button>
                         <Dropdown.Toggle split />
                         <Dropdown.Menu style={{height: '185px', overflowY: 'scroll'}}>
@@ -40,7 +52,7 @@ const GridDimentions = () => {
                 <Col sm={3}>
                     <Dropdown as={ButtonGroup} onSelect={ (eventKey, event) => columnsUpdated(eventKey, event)}>
                         <Button>
-                            Columns - {columns} (Max 50)
+                            Columns - {state.dimensions.columns} (Max 50)
                         </Button>
                         <Dropdown.Toggle split />
                         <Dropdown.Menu style={{height: '185px', overflowY: 'scroll'}}>
@@ -55,4 +67,4 @@ const GridDimentions = () => {
     );
 };
 
-export default GridDimentions;
+export default GridDimensions;

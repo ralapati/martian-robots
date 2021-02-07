@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import {MarsRobotContext} from "../mars-robo-context";
 
 const Instructions = () => {
 
-    const [instructions, setInstructions] = useState(['New']);
+    const [state, dispatch] = useContext(MarsRobotContext);
+    const {instructions} = state;
+
 
     const updateInstruction = (eventKey, event, index) => {
 
@@ -25,7 +28,12 @@ const Instructions = () => {
         instr = index === (instructions.length -1 ) ? [...instr, 'New'] : instr;
 
         //Finally update the instructions with updated item
-        setInstructions(instr);
+        dispatch({
+            type: 'SET_INSTRUCTIONS',
+            payload: {
+                instructions: [...instr]
+            }
+        })
     };
 
     return (
@@ -36,7 +44,7 @@ const Instructions = () => {
             <Row>
                 <Col>
                     {instructions.map( (item, index) =>
-                        <Dropdown as={ButtonGroup} onSelect={ (eventKey, event) => updateInstruction(eventKey, event, index)}>
+                        <Dropdown as={ButtonGroup} onSelect={ (eventKey, event) => updateInstruction(eventKey, event, index)} style={{paddingRight: '5px'}}>
                             <Button>
                                 {item}
                             </Button>

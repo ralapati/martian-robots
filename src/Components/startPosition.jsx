@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,18 +7,44 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import {MarsRobotContext} from "../mars-robo-context";
 
 const StartPosition = () => {
 
-    const [startRow, updateRow] = useState(0);
-    const [startColumn, updateColumn] = useState(0);
+    const [state, dispatch] = useContext(MarsRobotContext);
+    const {initialRow, initialColumn, orientation} = state.startPosition;
 
     const rowUpdated = (eventKey) => {
-        updateRow(eventKey);
+        dispatch({
+            type: 'SET_INITIAL_POSITION',
+            payload: {
+                initialRow: eventKey,
+                initialColumn: state.startPosition.initialColumn,
+                orientation: state.startPosition.orientation
+            }
+        });
     };
 
     const columnUpdated = (eventKey) => {
-        updateColumn(eventKey);
+        dispatch({
+            type: 'SET_INITIAL_POSITION',
+            payload: {
+                initialRow: state.startPosition.initialRow,
+                initialColumn: eventKey,
+                orientation: state.startPosition.orientation
+            }
+        });
+    };
+
+    const orientationUpdated = (newValue) => {
+        dispatch({
+            type: 'SET_INITIAL_POSITION',
+            payload: {
+                initialRow: state.startPosition.initialRow,
+                initialColumn: state.startPosition.initialColumn,
+                orientation: newValue
+            }
+        });
     };
 
     return (
@@ -41,11 +67,11 @@ const StartPosition = () => {
                 <Col>
                     <Dropdown as={ButtonGroup} onSelect={(eventKey, event) => rowUpdated(eventKey, event)}>
                         <Button>
-                            Initial Row - {startRow}
+                            Initial Row - {initialRow}
                         </Button>
-                        <Dropdown.Toggle split />
+                        <Dropdown.Toggle split/>
                         <Dropdown.Menu style={{height: '185px', overflowY: 'scroll'}}>
-                            {Array.from({length: 20}, (item, index) =>
+                            {Array.from({length: state.dimensions.rows}, (item, index) =>
                                 <Dropdown.Item key={'startRow' + index} eventKey={index}>
                                     Initial Row - {index}</Dropdown.Item>
                             )}
@@ -53,13 +79,13 @@ const StartPosition = () => {
                     </Dropdown>
                 </Col>
                 <Col>
-                    <Dropdown  as={ButtonGroup} onSelect={(eventKey, event) => columnUpdated(eventKey, event)}>
+                    <Dropdown as={ButtonGroup} onSelect={(eventKey, event) => columnUpdated(eventKey, event)}>
                         <Button>
-                            Initial Column - {startColumn}
+                            Initial Column - {initialColumn}
                         </Button>
-                        <Dropdown.Toggle split />
+                        <Dropdown.Toggle split/>
                         <Dropdown.Menu style={{height: '185px', overflowY: 'scroll'}}>
-                            {Array.from({length: 20}, (item, index) =>
+                            {Array.from({length: state.dimensions.columns}, (item, index) =>
                                 <Dropdown.Item key={'startingColumn' + index} eventKey={index}>
                                     Initial Column - {index}</Dropdown.Item>
                             )}
@@ -67,7 +93,8 @@ const StartPosition = () => {
                     </Dropdown>
                 </Col>
                 <Col>
-                    <ToggleButtonGroup type='radio' name='startOrientation' defaultValue='North'>
+                    <ToggleButtonGroup type='radio' name='startOrientation' defaultValue={orientation}
+                                       onChange={(newValue) => orientationUpdated(newValue)}>
                         <ToggleButton value='North' variant='secondary'>North</ToggleButton>
                         <ToggleButton value='East' variant='secondary'>East</ToggleButton>
                         <ToggleButton value='West' variant='secondary'>West</ToggleButton>
