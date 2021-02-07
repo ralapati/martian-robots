@@ -13,7 +13,13 @@ const initialState = {
         orientation: 'North'
     },
     instructions: ['New'],
-    grid: []
+    grid: [],
+    currentPosition: {
+        row: 0,
+        column: 0,
+        orientation: 0
+    },
+    robotLost: false
 };
 
 const reducer = (state, action) => {
@@ -33,11 +39,16 @@ const reducer = (state, action) => {
                     initialColumn: action.payload.initialColumn,
                     orientation: action.payload.orientation
                 },
+                currentPosition: {
+                    row: action.payload.initialRow,
+                    column: action.payload.initialColumn,
+                    orientation: action.payload.orientation
+                },
                 grid: [...action.payload.grid]
             };
         case "SET_INSTRUCTIONS":
             return {
-                ...state, instructions: action.payload.instructions
+                ...state, instructions: action.payload.instructions, currentPosition: action.payload.position, grid: action.payload.grid, robotLost: action.payload.robotLost
             };
         default:
             throw new Error();

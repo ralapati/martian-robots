@@ -13,6 +13,7 @@ const Instructions = () => {
     const {instructions} = state;
 
 
+    // TODO - Move most of this logic to a factory / utility function(s)
     const updateInstruction = (eventKey, event, index) => {
 
         // Take a copy of latest instructions and update the item with new value
@@ -20,18 +21,60 @@ const Instructions = () => {
         instr[index] = eventKey;
 
         // Remove item from the array if action selected is 'Remove'
-        if(eventKey === 'Remove') {
-            instr.splice(index,1);
+        if (eventKey === 'Remove') {
+            instr.splice(index, 1);
         }
 
         // Add 'New' item at end of the array if updated item is the last item
-        instr = index === (instructions.length -1 ) ? [...instr, 'New'] : instr;
+        instr = index === (instructions.length - 1) ? [...instr, 'New'] : instr;
 
-        //Finally update the instructions with updated item
+
+        // Get a copy of grid and update it with robot path
+        let newGrid = [...state.grid];  //TODO - Use lodash to deepcopy
+        let position = {
+            row: state.startPosition.initialRow,
+            column: state.startPosition.initialColumn,
+            orientation: state.startPosition.orientation
+        };
+
+        let robotLost = false;
+
+        for (let counter = 0; counter < (instr.length - 1); counter++) {
+            if (instr[counter] === 'Forward') {
+                if (position.orientation === 'North') position.row = position.row + 1;
+                if (position.orientation === 'East') position.column = position.column + 1;
+                if (position.orientation === 'South') position.row = position.row - 1;
+                if (position.orientation === 'West') position.column = position.column - 1;
+
+                // check if the robot is lost
+                if (position.row >= state.dimensions.rows || position.column >= state.dimensions.columns || position.row < 0 || position.column < 0) {
+                    robotLost = true;
+                    break;
+                } else {
+                    newGrid[position.row][position.column] = position.orientation;
+                }
+
+            } else if (instr[counter] === 'Right') {
+                const moveRight = {North: 'East', East: 'South', South: 'West', West: 'North'};
+                position.orientation = moveRight[position.orientation];
+                newGrid[position.row][position.column] = position.orientation;
+            } else if (instr[counter] === 'Left') {
+                const moveLeft = {North: 'West', West: 'South', South: 'East', East: 'North'};
+                position.orientation = moveLeft[position.orientation];
+                newGrid[position.row][position.column] = position.orientation;
+            } else {
+                throw Error('Unrecognised Instruction')
+            }
+        }
+
+        //Finally update the instructions with updated details
         dispatch({
             type: 'SET_INSTRUCTIONS',
             payload: {
-                instructions: [...instr]
+                instructions: [...instr],
+                position: {...position},
+                grid: [...newGrid],
+                robotLost: robotLost
             }
         })
     };
@@ -43,8 +86,10 @@ const Instructions = () => {
             </Row>
             <Row>
                 <Col>
-                    {instructions.map( (item, index) =>
-                        <Dropdown as={ButtonGroup} onSelect={ (eventKey, event) => updateInstruction(eventKey, event, index)} style={{paddingRight: '5px'}}>
+                    {instructions.map((item, index) =>
+                        <Dropdown as={ButtonGroup}
+                                  onSelect={(eventKey, event) => updateInstruction(eventKey, event, index)}
+                                  style={{paddingRight: '5px'}}>
                             <Button>
                                 {item}
                             </Button>

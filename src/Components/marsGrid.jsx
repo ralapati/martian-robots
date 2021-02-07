@@ -10,10 +10,16 @@ const MarsGrid = () => {
 
     const [state] = useContext(MarsRobotContext);
     const {rows, columns} = state.dimensions;
-    const {grid} = state;
+    const {grid, robotLost} = state;
 
     return (
         <Container id='marsGrid'>
+            {robotLost === true &&
+                <Row>
+                    Robot Lost!!!
+                </Row>
+            }
+
             {(rows !== 0 && columns !== 0) ?
                 grid.slice().reverse().map((gridRow, rowIndex) =>
                     <Row key={rowIndex}>
