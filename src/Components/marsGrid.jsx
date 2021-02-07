@@ -6,8 +6,6 @@ import Col from 'react-bootstrap/Col';
 
 const MarsGrid = ({rows = 1, cols = 1}) => {
 
-    console.log('rows', rows);
-
     return (
         <Container>
             {Array.from({length: rows}, (el, index) =>

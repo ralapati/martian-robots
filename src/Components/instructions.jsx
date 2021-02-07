@@ -3,8 +3,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-const RobotInstructions = () => {
+const Instructions = () => {
 
     const [instructions, setInstructions] = useState(['New']);
 
@@ -29,19 +31,21 @@ const RobotInstructions = () => {
     return (
         <Container>
             <Row>
-                Enter the Instructions to the Rebot
+                Select Instructions to Rebot
             </Row>
             <Row>
                 <Col>
                     {instructions.map( (item, index) =>
-                        <Dropdown onSelect={ (eventKey, event) => updateInstruction(eventKey, event, index)}>
-                            <Dropdown.Toggle>
+                        <Dropdown as={ButtonGroup} onSelect={ (eventKey, event) => updateInstruction(eventKey, event, index)}>
+                            <Button>
                                 {item}
-                            </Dropdown.Toggle>
+                            </Button>
+                            <Dropdown.Toggle split/>
                             <Dropdown.Menu>
                                 <Dropdown.Item key='Left' eventKey='Left'>Left</Dropdown.Item>
                                 <Dropdown.Item key='Right' eventKey='Right'>Right</Dropdown.Item>
                                 <Dropdown.Item key='Forward' eventKey='Forward'>Forward</Dropdown.Item>
+                                <Dropdown.Divider/>
                                 <Dropdown.Item key='Remove' eventKey='Remove'>Remove this</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
@@ -52,4 +56,4 @@ const RobotInstructions = () => {
     );
 };
 
-export default RobotInstructions;
+export default Instructions;
