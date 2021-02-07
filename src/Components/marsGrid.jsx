@@ -10,20 +10,22 @@ const MarsGrid = () => {
 
     const [state] = useContext(MarsRobotContext);
     const {rows, columns} = state.dimensions;
+    const {grid} = state;
 
     return (
-        <Container>
+        <Container id='marsGrid'>
             {(rows !== 0 && columns !== 0) ?
-                Array.from({length: rows}, (el, index) =>
-                <Row key={index}>
-                    {Array.from({length: columns}, (item, colIndex) =>
-                            <Col style={{width: '50px', height: '50px', background: '#bbeffd', border: '1px solid #61dafb'}} key={colIndex}>
-                                &nbsp;
+                grid.slice().reverse().map((gridRow, rowIndex) =>
+                    <Row key={rowIndex}>
+                        {gridRow.map((gridCol, colIndex) => <Col
+                                style={{width: '50px', height: '50px', background: '#bbeffd', border: '1px solid #61dafb'}}
+                                key={colIndex}>
+                            {gridCol}
                             </Col>
-                        )
-                    }
-                </Row>
-            ) : <div> Please set dimensions of the grid</div>}
+                        )}
+                    </Row>
+                )
+                : <div>Please set dimensions of the grid</div>}
         </Container>
     );
 };

@@ -14,8 +14,9 @@ const GridDimensions = () => {
         dispatch({
             type: 'SET_DIMENSIONS',
             payload: {
-                rows: eventKey,
-                columns: state.dimensions.columns
+                rows: parseInt(eventKey),
+                columns: state.dimensions.columns,
+                grid: [...Array(parseInt(eventKey))].map(() => Array(state.dimensions.columns).fill(0))
             }
         });
     };
@@ -25,7 +26,8 @@ const GridDimensions = () => {
             type: 'SET_DIMENSIONS',
             payload: {
                 rows: state.dimensions.rows,
-                columns: eventKey
+                columns: parseInt(eventKey),
+                grid: [...Array(state.dimensions.rows)].map(() => Array(parseInt(eventKey)).fill(0))
             }
         })
     };

@@ -15,34 +15,49 @@ const StartPosition = () => {
     const {initialRow, initialColumn, orientation} = state.startPosition;
 
     const rowUpdated = (eventKey) => {
+
+        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(0));
+        newGrid[eventKey][state.startPosition.initialColumn] = state.startPosition.orientation;
+
         dispatch({
             type: 'SET_INITIAL_POSITION',
             payload: {
                 initialRow: eventKey,
                 initialColumn: state.startPosition.initialColumn,
-                orientation: state.startPosition.orientation
+                orientation: state.startPosition.orientation,
+                grid: [...newGrid]
             }
         });
     };
 
     const columnUpdated = (eventKey) => {
+
+        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(0));
+        newGrid[state.startPosition.initialRow][eventKey] = state.startPosition.orientation;
+
         dispatch({
             type: 'SET_INITIAL_POSITION',
             payload: {
                 initialRow: state.startPosition.initialRow,
                 initialColumn: eventKey,
-                orientation: state.startPosition.orientation
+                orientation: state.startPosition.orientation,
+                grid: [...newGrid]
             }
         });
     };
 
     const orientationUpdated = (newValue) => {
+
+        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(0));
+        newGrid[state.startPosition.initialRow][state.startPosition.initialColumn] = newValue;
+
         dispatch({
             type: 'SET_INITIAL_POSITION',
             payload: {
                 initialRow: state.startPosition.initialRow,
                 initialColumn: state.startPosition.initialColumn,
-                orientation: newValue
+                orientation: newValue,
+                grid: [...newGrid]
             }
         });
     };
@@ -65,7 +80,7 @@ const StartPosition = () => {
             </Row>
             <Row>
                 <Col>
-                    <Dropdown as={ButtonGroup} onSelect={(eventKey, event) => rowUpdated(eventKey, event)}>
+                    <Dropdown as={ButtonGroup} onSelect={(eventKey, event) => rowUpdated(parseInt(eventKey), event)}>
                         <Button>
                             Initial Row - {initialRow}
                         </Button>
@@ -79,7 +94,7 @@ const StartPosition = () => {
                     </Dropdown>
                 </Col>
                 <Col>
-                    <Dropdown as={ButtonGroup} onSelect={(eventKey, event) => columnUpdated(eventKey, event)}>
+                    <Dropdown as={ButtonGroup} onSelect={(eventKey, event) => columnUpdated(parseInt(eventKey), event)}>
                         <Button>
                             Initial Column - {initialColumn}
                         </Button>

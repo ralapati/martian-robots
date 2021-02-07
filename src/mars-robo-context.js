@@ -23,7 +23,8 @@ const reducer = (state, action) => {
                 ...state, dimensions: {
                     rows: action.payload.rows,
                     columns: action.payload.columns
-                }
+                },
+                grid: [...action.payload.grid]
             };
         case "SET_INITIAL_POSITION":
             return {
@@ -31,22 +32,24 @@ const reducer = (state, action) => {
                     initialRow: action.payload.initialRow,
                     initialColumn: action.payload.initialColumn,
                     orientation: action.payload.orientation
-                }
+                },
+                grid: [...action.payload.grid]
             };
         case "SET_INSTRUCTIONS":
             return {
                 ...state, instructions: action.payload.instructions
             };
-        default: throw new Error();
+        default:
+            throw new Error();
     }
 };
 
 export const MarsRobotContextProvider = props => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
-  return (
-      <MarsRobotContext.Provider value={[state, dispatch]}>
-          {props.children}
-      </MarsRobotContext.Provider>
-  );
+    return (
+        <MarsRobotContext.Provider value={[state, dispatch]}>
+            {props.children}
+        </MarsRobotContext.Provider>
+    );
 };
