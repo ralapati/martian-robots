@@ -14,3 +14,4 @@ npm install
 ````
 npm start 
 ````
+open browser and type URL - http://localhost:3300
