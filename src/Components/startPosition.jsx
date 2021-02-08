@@ -16,7 +16,7 @@ const StartPosition = () => {
 
     const rowUpdated = (eventKey) => {
 
-        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(0));
+        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(''));
         newGrid[eventKey][state.startPosition.initialColumn] = state.startPosition.orientation;
 
         dispatch({
@@ -32,7 +32,7 @@ const StartPosition = () => {
 
     const columnUpdated = (eventKey) => {
 
-        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(0));
+        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(''));
         newGrid[state.startPosition.initialRow][eventKey] = state.startPosition.orientation;
 
         dispatch({
@@ -48,7 +48,7 @@ const StartPosition = () => {
 
     const orientationUpdated = (newValue) => {
 
-        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(0));
+        let newGrid = [...Array(state.dimensions.rows)].map(() => Array(state.dimensions.columns).fill(''));
         newGrid[state.startPosition.initialRow][state.startPosition.initialColumn] = newValue;
 
         dispatch({

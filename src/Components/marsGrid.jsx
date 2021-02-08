@@ -31,7 +31,7 @@ const MarsGrid = () => {
                         )}
                     </Row>
                 )
-                : <div>Please set dimensions of the grid</div>}
+                : <div>Please set dimensions & starting position to preview the Mars in a grid format.</div>}
         </Container>
     );
 };

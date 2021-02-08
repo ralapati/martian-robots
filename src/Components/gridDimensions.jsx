@@ -16,7 +16,7 @@ const GridDimensions = () => {
             payload: {
                 rows: parseInt(eventKey),
                 columns: state.dimensions.columns,
-                grid: [...Array(parseInt(eventKey))].map(() => Array(state.dimensions.columns).fill(0))
+                grid: [...Array(parseInt(eventKey))].map(() => Array(state.dimensions.columns).fill(''))
             }
         });
     };
@@ -27,7 +27,7 @@ const GridDimensions = () => {
             payload: {
                 rows: state.dimensions.rows,
                 columns: parseInt(eventKey),
-                grid: [...Array(state.dimensions.rows)].map(() => Array(parseInt(eventKey)).fill(0))
+                grid: [...Array(state.dimensions.rows)].map(() => Array(parseInt(eventKey)).fill(''))
             }
         })
     };
